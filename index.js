@@ -1,5 +1,4 @@
 import Excel from 'exceljs';
-
 import { writeFile } from 'fs';
 
 class ExcelFraction {
@@ -50,21 +49,18 @@ class ExcelFraction {
     return fracciones;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   isDate(date) {
     let posibleDate = Date.parse(date);
     posibleDate = typeof date === 'string' || posibleDate < 1 ? 1 : posibleDate;
     return posibleDate > 0;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   appendZero(number = 0) {
     return number > 9 ? number : `0${number}`;
   }
 }
 
 const excel = new ExcelFraction();
-
-try {
-  excel.getFractions();
-} catch (error) {
-
-}
+excel.getFractions();
