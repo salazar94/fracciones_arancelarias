@@ -22,7 +22,7 @@ class ExcelFraction {
 
     // eslint-disable-next-line class-methods-use-this
     async saveJson(name, data) {
-        writeFile(`${name}.json`, JSON.stringify(data.filter(Boolean).flat()), async () => {
+        writeFile(`${name}.json`, JSON.stringify(data.flat().filter(Boolean)), async () => {
             console.log('Archivo json creado');
         });
     }
