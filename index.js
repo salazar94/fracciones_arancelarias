@@ -1,6 +1,22 @@
 import Excel from 'exceljs';
 import { writeFile } from 'fs';
 
+// interface fractions {
+//   fraction: string,
+//   nico: string
+// };
+// readFile('./fracciones.json', (error, files) => {
+//   let m = JSON.parse(files.toString());
+//   m = m.map((x) => x?.fraccion).filter(Boolean);  
+//   const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+//   const s = findDuplicates(m);
+//   m = [...new Set(s)];
+//   writeFile(`${'fracciones-repetidas'}.json`, JSON.stringify(m), async () => {
+//     console.log('Archivo json creado');
+//   });
+//   console.log(m);
+// });
+
 class ExcelFraction {
   constructor() {
     this.excel = new Excel.Workbook();
@@ -62,5 +78,5 @@ class ExcelFraction {
   }
 }
 
-const excel = new ExcelFraction();
-excel.getFractions();
+// const excel = new ExcelFraction();
+// excel.getFractions();
