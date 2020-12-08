@@ -27,16 +27,20 @@ class ExcelFraction {
   async getWorkBook() {
     return this.excel.xlsx.readFile(this.path);
   }
-
+  setKeys(fraction = []) {
+    return fraction.reduce((acc, ele) => { acc[`${ele.fraccion}${ele.nico}`] = ele; return acc }, {});
+  }
   async getFractions() {
     const workBook = await this.getWorkBook();
     const fractions = workBook.worksheets.map((sheet) => (sheet.id > 104 ? null : this.setFractions(sheet)));
-    await this.saveJson('fracciones', fractions);
+    let m = this.setKeys(fractions.flat().filter(Boolean));
+    await this.saveJson('fracciones', m);
   }
 
   // eslint-disable-next-line class-methods-use-this
   async saveJson(name, data) {
-    writeFile(`${name}.json`, JSON.stringify(data.flat()), async () => {
+    // data = data.flat().filter(Boolean);
+    writeFile(`${name}.json`, JSON.stringify(data), async () => {
       console.log('Archivo json creado');
     });
   }
@@ -59,7 +63,9 @@ class ExcelFraction {
       const fraccion = this.isDate(cellValue) ? this.fractionFromDate(cellValue) : cellValue?.richText[0]?.text;
       if (this.isFraction(fraccion)) {
         const Nico = this.appendZero(sheet.getRow(index).getCell(2).value.toString());
-        fracciones.push({ fraccion, nico: Nico });
+        const descripcion = sheet.getRow(index).getCell(3).value.richText[0]?.text;
+        fracciones.push({ fraccion, nico: Nico, description: descripcion });
+
       }
     }
     return fracciones;
@@ -78,5 +84,5 @@ class ExcelFraction {
   }
 }
 
-// const excel = new ExcelFraction();
-// excel.getFractions();
+const excel = new ExcelFraction();
+excel.getFractions();

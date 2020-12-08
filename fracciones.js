@@ -12,17 +12,19 @@ class ExcelFraction {
     async getWorkBook() {
         return this.excel.xlsx.readFile(this.path);
     }
-
+   
     async getFractions() {
         const workBook = await this.getWorkBook();
         const fractions = workBook.worksheets.map((sheet) => (sheet.id < 105 ? null : this.setFractions(sheet)));
         // const fractions =  this.setFractions(workBook.worksheets[117]);
+        
         await this.saveJson('fracciones TIGIE', fractions);
     }
 
     // eslint-disable-next-line class-methods-use-this
     async saveJson(name, data) {
-        writeFile(`${name}.json`, JSON.stringify(data.flat().filter(Boolean)), async () => {
+        data = data.flat().filter(Boolean);
+        writeFile(`${name}.json`, JSON.stringify(data), async () => {
             console.log('Archivo json creado');
         });
     }
@@ -48,7 +50,7 @@ class ExcelFraction {
                 const fraccionN = this.isDate(cellValue2) ? this.fractionFromDate(cellValue2) : cellValue2?.richText[0]?.text;
                 if (this.isFraction(fraccionV) && this.isFraction(fraccionN)) {
                     const Nico = this.appendZero(sheet.getRow(index).getCell(3).value.toString());
-                    fracciones.push({ fraccionVieja: fraccionV, fraccionNueva: fraccionN, nico: Nico });
+                    fracciones.push({ fraccionVieja: fraccionV, fraccionNueva: fraccionN, nico: Nico, fraccionIndice: `${fraccionN}${Nico}` });
                 }
             }
 
